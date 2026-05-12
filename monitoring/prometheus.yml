@@ -1,0 +1,38 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    app: knowledge-base
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+  # 加载告警规则
+  rule_files:
+    - "/etc/prometheus/alert-rules.yml"
+
+scrape_configs:
+  # Prometheus 自身监控
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Nginx Exporter — 核心指标（需安装 nginx-module-stub-status）
+  # QPS / 状态码分布 / 连接数
+  - job_name: "nginx-exporter"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["nginx-exporter:9113"]
+        labels:
+          service: "knowledge-base"
+          tier: "frontend"
+
+  # 应用健康检查端点 — 黑盒监控
+  - job_name: "knowledge-base-health"
+    metrics_path: /health
+    static_configs:
+      - targets: ["knowledge-base:80"]
+        labels:
+          service: "knowledge-base"
+          tier: "frontend"

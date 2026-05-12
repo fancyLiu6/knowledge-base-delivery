@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识库 - Knowledge Base</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; }
+  .header { background: #1a1a2e; color: #fff; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 1.4em; }
+  .header nav a { color: #a0a0c0; text-decoration: none; margin-left: 24px; font-size: 0.95em; }
+  .header nav a:hover { color: #fff; }
+  .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+  .search-bar { display: flex; gap: 10px; margin-bottom: 30px; }
+  .search-bar input { flex: 1; padding: 12px 18px; border: 2px solid #ddd; border-radius: 8px; font-size: 1em; outline: none; }
+  .search-bar input:focus { border-color: #4a6cf7; }
+  .search-bar button { padding: 12px 24px; background: #4a6cf7; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; }
+  .search-bar button:hover { background: #3b5de7; }
+  .articles { display: grid; gap: 20px; }
+  .card { background: #fff; padding: 24px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .card h3 { margin-bottom: 8px; color: #1a1a2e; }
+  .card p { color: #666; font-size: 0.95em; line-height: 1.6; margin-bottom: 10px; }
+  .card .tags { display: flex; gap: 8px; }
+  .card .tag { background: #eef0ff; color: #4a6cf7; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; }
+  .footer { text-align: center; color: #999; padding: 40px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📚 Knowledge Base</h1>
+  <nav>
+    <a href="/">首页</a>
+    <a href="/">运维</a>
+    <a href="/">开发</a>
+    <a href="/">SRE</a>
+  </nav>
+</div>
+<div class="container">
+  <div class="search-bar">
+    <input type="text" placeholder="搜索文章...">
+    <button>搜索</button>
+  </div>
+  <div class="articles">
+    <div class="card">
+      <h3>Nginx 反向代理最佳实践</h3>
+      <p>详细介绍 Nginx 作为反向代理时的配置优化、缓冲区调优、超时设置以及常见 502/504 错误排查思路。</p>
+      <div class="tags"><span class="tag">Nginx</span><span class="tag">运维</span></div>
+    </div>
+    <div class="card">
+      <h3>Docker 多阶段构建优化镜像体积</h3>
+      <p>通过多阶段构建将 Go / Python 应用镜像从 800MB 压缩到 15MB，同时不丢失构建依赖。</p>
+      <div class="tags"><span class="tag">Docker</span><span class="tag">云原生</span></div>
+    </div>
+    <div class="card">
+      <h3>SRE 中的 SLO 与 Error Budget 实践</h3>
+      <p>如何为微服务设定合理的 SLO，计算 Error Budget，以及当预算耗尽时如何推动变更冻结。</p>
+      <div class="tags"><span class="tag">SRE</span><span class="tag">可靠性</span></div>
+    </div>
+    <div class="card">
+      <h3>Prometheus 告警规则编写指南</h3>
+      <p>从 PromQL 基础到生产级告警规则设计，避免告警风暴和误报，实现可行动的告警通知。</p>
+      <div class="tags"><span class="tag">Prometheus</span><span class="tag">监控</span></div>
+    </div>
+    <div class="card">
+      <h3>Kubernetes Pod 排障速查表</h3>
+      <p>覆盖 ImagePullBackOff、CrashLoopBackOff、Pending 等常见 Pod 状态的分析方法和解决步骤。</p>
+      <div class="tags"><span class="tag">Kubernetes</span><span class="tag">排障</span></div>
+    </div>
+  </div>
+</div>
+<div class="footer">&copy; 2025 Knowledge Base — Built with Docker &amp; Nginx</div>
+<script>
+(function() {
+  const route = window.location.pathname;
+  console.log('[SPA] Route:', route);
+})();
+</script>
+</body>
+</html>

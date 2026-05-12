@@ -1,0 +1,43 @@
+groups:
+  - name: knowledge-base-alerts
+    interval: 30s
+    rules:
+      # 实例宕机告警
+      - alert: InstanceDown
+        expr: up{job="nginx-exporter"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Nginx 实例 {{ $labels.instance }} 宕机"
+          description: "服务 {{ $labels.service }} 的 Nginx 实例已超过 2 分钟不可达"
+
+      # 错误率告警（5xx 状态码）
+      - alert: HighErrorRate
+        expr: rate(nginx_http_requests_total{status=~"5.."}[5m]) / rate(nginx_http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "5xx 错误率超过 5%"
+          description: "过去 5 分钟内 Nginx 5xx 错误占比 {{ $value | humanizePercentage }}"
+
+      # 延迟升高告警
+      - alert: HighLatency
+        expr: histogram_quantile(0.99, rate(nginx_http_request_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "P99 延迟超过 1 秒"
+          description: "Nginx P99 响应延迟 {{ $value }}s，阈值 1s"
+
+      # 健康检查失败
+      - alert: HealthCheckFailed
+        expr: probe_success{job="knowledge-base-health"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "应用健康检查失败"
+          description: "{{ $labels.instance }} 的 /health 端点返回非 200"
