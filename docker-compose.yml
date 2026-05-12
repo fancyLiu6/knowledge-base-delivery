@@ -8,7 +8,6 @@ services:
     container_name: knowledge-base
     ports:
       - "8080:80"
-      - "9113:9113"
     restart: always
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost/health"]

@@ -8,9 +8,9 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets: []
-  # 加载告警规则
-  rule_files:
-    - "/etc/prometheus/alert-rules.yml"
+
+rule_files:
+  - "/etc/prometheus/alert-rules.yml"
 
 scrape_configs:
   # Prometheus 自身监控
@@ -28,11 +28,5 @@ scrape_configs:
           service: "knowledge-base"
           tier: "frontend"
 
-  # 应用健康检查端点 — 黑盒监控
-  - job_name: "knowledge-base-health"
-    metrics_path: /health
-    static_configs:
-      - targets: ["knowledge-base:80"]
-        labels:
-          service: "knowledge-base"
-          tier: "frontend"
+  # 应用健康检查（走 nginx_exporter 指标判断存活）
+  # 注：/health 端点返回 JSON，由 Docker/K8s 探针消费，不在此处抓取
