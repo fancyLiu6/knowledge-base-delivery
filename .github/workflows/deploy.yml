@@ -1,0 +1,38 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: knowledge-base:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Verify health endpoint
+        run: |
+          docker run -d -p 8080:80 --name kb-test knowledge-base:latest
+          sleep 3
+          curl -f http://localhost:8080/health
+          curl -f http://localhost:8080/nginx_status
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f kb-test
