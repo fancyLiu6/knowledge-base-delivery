@@ -1,0 +1,23 @@
+# 健康检查目标配置
+# 用于 health-checker.py 批量检查 HTTP 端点
+
+targets:
+  - name: knowledge-base-home
+    url: http://localhost:8080
+    expected_status: 200
+
+  - name: knowledge-base-health
+    url: http://localhost:8080/health
+    expected_status: 200
+
+  - name: prometheus
+    url: http://localhost:9090/-/healthy
+    expected_status: 200
+
+  - name: grafana
+    url: http://localhost:3000/api/health
+    expected_status: 200
+
+  - name: nginx-exporter
+    url: http://localhost:9113/metrics
+    expected_status: 200
